@@ -55,7 +55,7 @@ struct ContentView: View {
                                 .font(.system(size: 16))
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 45)
-                                .foregroundStyle(.gray)
+                                .foregroundStyle(.oil)
                         }
                     }
                     
@@ -66,13 +66,13 @@ struct ContentView: View {
                     }) {
                         Text("Set Plant Reminder")
                             .foregroundColor(.white)
+                            .font(.system(size: 20))
                             .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(Color.neongreen)
-                            .cornerRadius(25)
-                            .padding(.horizontal, 50)
+                            .padding()
+                            .frame(width:290, height: 40)
                     }
+                    .buttonStyle(.glassProminent)
+                    .tint(Color("neongreen"))
                     .sheet(isPresented: $isPresented) {
                         SetReminderView()
                             .environmentObject(viewModel)

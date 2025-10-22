@@ -80,7 +80,7 @@ struct SetReminderView: View {
                     // 💧 Watering Days, Water
                     VStack(spacing: 0) {
                         HStack {
-                            Label("Watering Days", systemImage: "calendar")
+                            Label("Watering Days", systemImage: "drop")
                                 .foregroundColor(.white)
                             Spacer()
                             Picker("", selection: $viewModel.watering) {
