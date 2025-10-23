@@ -1,26 +1,25 @@
 //
-//  SetReminderView.swift
+//  EditReminderView.swift
 //  plants
 //
-//  Created by Lojaen Jehad Ayash on 28/04/1447 AH.
+//  Created by Lojaen Jehad Ayash on 30/04/1447 AH.
 //
 
 import SwiftUI
 
-struct SetReminderView: View {
+struct EditReminderView: View {
     @EnvironmentObject var viewModel: PlantViewModel
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 40) {
-                    
+
                     // 🪴 Plant Name
                     HStack {
                         Text("Plant Name")
                             .foregroundColor(.white)
-                        
                         TextField("", text: $viewModel.plant.name)
                             .foregroundColor(Color("neongreen"))
                             .tint(Color("neongreen"))
@@ -31,7 +30,7 @@ struct SetReminderView: View {
                     .background(Color.lightGray)
                     .cornerRadius(25)
                     .padding(.top, 20)
-                    
+
                     // 🏡 Room , Light
                     VStack(spacing: 0) {
                         HStack {
@@ -105,18 +104,33 @@ struct SetReminderView: View {
                     .background(Color.lightGray)
                     .cornerRadius(20)
                     
+                    // 🗑 Delete Reminder
+                    Button(action: {
+                        viewModel.deletePlant(viewModel.plant)
+                        dismiss()
+                    }) {
+                        Text("Delete Reminder")
+                            .foregroundColor(.red)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.lightGray)
+                            .cornerRadius(25)
+                    }
+                    .padding(.top, 10)
+
                     Spacer()
                 }
                 .padding(.horizontal)
             }
             .background(Color.darkGray.ignoresSafeArea())
-            .navigationTitle("Set Reminder")
+            .navigationTitle("Edit Reminder")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(Color.darkGray, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
-                
+
                 // ❌ Cancel
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: { dismiss() }) {
@@ -127,11 +141,11 @@ struct SetReminderView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(Color("darkgray"))
                 }
-                
-                // ✅ Save
+
+                // 💾 Save
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        viewModel.addPlant()
+                        viewModel.updatePlant()
                         dismiss()
                     }) {
                         Image(systemName: "checkmark")
@@ -147,22 +161,6 @@ struct SetReminderView: View {
 }
 
 #Preview {
-    SetReminderView()
+    EditReminderView()
         .environmentObject(PlantViewModel())
-}
-
-// Colors
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let r = Double((int >> 16) & 0xFF) / 255.0
-        let g = Double((int >> 8) & 0xFF) / 255.0
-        let b = Double(int & 0xFF) / 255.0
-        self.init(red: r, green: g, blue: b)
-    }
-
-    static let lightGray = Color(hex: "#2C2C2E")
-    static let darkGray = Color(hex: "#1C1C1E")
 }

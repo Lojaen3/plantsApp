@@ -8,40 +8,93 @@
 import SwiftUI
 import Combine
 
-import Foundation
-
 final class PlantViewModel: ObservableObject {
-    @Published var plantName: String = ""
-    @Published var room: String = "Bedroom"
-    @Published var light: String = "Full Sun"
-    @Published var watering: String = "Every day"
-    @Published var waterAmount: String = "20-50 ml"
+    // 🌱 النبتة الحالية (للإضافة أو التعديل)
+    @Published var plant = Plant()
 
+    // 🌿 جميع النباتات
     @Published var plants: [Plant] = []
-    @Published var showAddPlantSheet = false
-    @Published var didAddPlant: Bool = false
 
+    // 💧 النباتات التي تم ريّها
+    @Published var wateredPlants: Set<UUID> = []
 
-    func addPlant() {
-        let newPlant = Plant(
-            name: plantName,
-            room: room,
-            light: light,
-            watering: watering,
-            waterAmount: waterAmount
-        )
+    // 🪴 حالات الواجهة
+    //@Published var showAddPlantSheet = false
+    @Published var didAddPlant = false
+    @Published var showAllDone = false
+    @Published var editingPlant: Plant?
 
-        plants.append(newPlant)
-        didAddPlant = true
-        clearFields()
-        showAddPlantSheet.toggle()
+    //  الحسابات
+    var wateredCount: Int {
+        wateredPlants.count
     }
 
-    private func clearFields() {
-        plantName = ""
-        room = ""
-        light = ""
-        watering = ""
-        waterAmount = ""
+    var progress: Double {
+        guard !plants.isEmpty else { return 0 }
+        return Double(wateredCount) / Double(plants.count)
+    }
+
+    var allDone: Bool {
+        !plants.isEmpty && wateredCount == plants.count
+    }
+
+    // دوال CRUD
+
+    /// إضافة نبتة جديدة
+    func addPlant() {
+        // إذا المستخدم كان يعدل نبتة، نحدثها بدل الإضافة
+        if let index = plants.firstIndex(where: { $0.id == plant.id }) {
+            plants[index] = plant
+        } else {
+            plants.append(plant)
+        }
+
+        showAllDone = false
+        didAddPlant = true
+        resetPlant()
+    }
+
+    /// تحديث نبتة موجودة
+    func updatePlant() {
+        guard let index = plants.firstIndex(where: { $0.id == plant.id }) else { return }
+        plants[index] = plant
+    }
+
+    /// حذف نبتة
+    func deletePlant(_ plant: Plant) {
+        plants.removeAll { $0.id == plant.id }
+    }
+
+    /// بدء التعديل على نبتة
+    func startEditing(_ existingPlant: Plant) {
+        plant = existingPlant
+        editingPlant = existingPlant
+    }
+
+    /// إعادة تعيين النبتة الحالية
+    private func resetPlant() {
+        plant = Plant() // يعيدها للوضع الافتراضي
+        editingPlant = nil
+    }
+
+    // منطق الري
+    func toggleWater(for plant: Plant) {
+        if wateredPlants.contains(plant.id) {
+            wateredPlants.remove(plant.id)
+        } else {
+            wateredPlants.insert(plant.id)
+        }
+        checkAllDone()
+    }
+
+    //  التحقق من اكتمال الري
+    private func checkAllDone() {
+        if allDone {
+            withAnimation {
+                showAllDone = true
+                plants.removeAll()
+                wateredPlants.removeAll()
+            }
+        }
     }
 }
