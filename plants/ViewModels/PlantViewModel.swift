@@ -48,7 +48,8 @@ final class PlantViewModel: ObservableObject {
         } else {
             plants.append(plant)
         }
-
+        // ✅ تحديث الإشعارات تلقائيًا
+        NotificationManager.shared.scheduleNotifications(for: plants)
         showAllDone = false
         didAddPlant = true
         resetPlant()
@@ -63,6 +64,8 @@ final class PlantViewModel: ObservableObject {
     /// حذف نبتة
     func deletePlant(_ plant: Plant) {
         plants.removeAll { $0.id == plant.id }
+        // ✅ تحديث الإشعارات تلقائيًا بعد الحذف
+            NotificationManager.shared.scheduleNotifications(for: plants)
     }
 
     /// بدء التعديل على نبتة
@@ -94,6 +97,7 @@ final class PlantViewModel: ObservableObject {
                 showAllDone = true
                 plants.removeAll()
                 wateredPlants.removeAll()
+                resetPlant()
             }
         }
     }

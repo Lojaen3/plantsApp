@@ -11,6 +11,10 @@ struct ContentView: View {
     @EnvironmentObject var viewModel: PlantViewModel
     @State private var isPresented: Bool = false
     
+    init() {
+           NotificationManager.shared.requestPermission()
+       }
+   
     var body: some View {
         NavigationStack {
             ZStack {
