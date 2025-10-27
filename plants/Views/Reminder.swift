@@ -134,6 +134,9 @@ struct ReminderView: View {
             .sheet(isPresented: $showAddSheet) {
                 SetReminderView()
                     .environmentObject(viewModel)
+                    .onAppear {
+                        viewModel.startAddingNewPlant() // ← هنا نهيئ نبتة جديدة فارغة
+                }
             }
         }
 

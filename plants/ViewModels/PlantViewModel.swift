@@ -65,6 +65,7 @@ final class PlantViewModel: ObservableObject {
     func deletePlant(_ plant: Plant) {
         plants.removeAll { $0.id == plant.id }
         // ✅ تحديث الإشعارات تلقائيًا بعد الحذف
+        NotificationManager.shared.clearNotifications(for: [plant]) // ← إزالة إشعارات النبتة المحذوفة
             NotificationManager.shared.scheduleNotifications(for: plants)
     }
 
@@ -89,15 +90,24 @@ final class PlantViewModel: ObservableObject {
         }
         checkAllDone()
     }
+    
+    func startAddingNewPlant() {
+        plant = Plant() // نبتة جديدة فارغة
+        editingPlant = nil
+    }
+
 
     //  التحقق من اكتمال الري
     private func checkAllDone() {
         if allDone {
             withAnimation {
                 showAllDone = true
+                NotificationManager.shared.clearNotifications(for: plants)
                 plants.removeAll()
                 wateredPlants.removeAll()
                 resetPlant()
+                NotificationManager.shared.scheduleNotifications(for: plants)
+
             }
         }
     }

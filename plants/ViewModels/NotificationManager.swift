@@ -23,16 +23,19 @@ class NotificationManager {
         }
     }
 
-    // 🔄 Remove all existing notifications before scheduling new ones
-    func clearAllNotifications() {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        print("🧹 Cleared all scheduled notifications.")
+    // 🧹 Remove notifications for specific plants
+    func clearNotifications(for plants: [Plant]) {
+        let ids = plants.map { "waterPlantReminder_\($0.id)" }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
+        print("🧹 Cleared notifications for plants: \(ids)")
     }
+
 
     // 🕙 Schedule daily notifications for plants at 10:00 AM
     func scheduleNotifications(for plants: [Plant]) {
-        clearAllNotifications()
-
+        // إزالة إشعارات النباتات الحالية قبل إعادة الجدولة
+        clearNotifications(for: plants)
+        
         var dateComponents = DateComponents()
         dateComponents.hour = 10
         dateComponents.minute = 0
