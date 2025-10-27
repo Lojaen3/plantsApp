@@ -31,8 +31,11 @@ enum Light: String, CaseIterable, Identifiable, Codable {
 
 enum WateringFrequency: String, CaseIterable, Identifiable, Codable {
     case everyDay = "Every day"
-    case every2Days = "Every 2 days"
-    case everyWeek = "Every week"
+        case every2Days = "Every 2 days"
+        case every3Days = "Every 3 days"
+        case everyWeek = "Once a week"
+        case every10Days = "Every 10 days"
+        case every2Weeks = "Every 2 weeks"
     var id: String { rawValue }
 }
 

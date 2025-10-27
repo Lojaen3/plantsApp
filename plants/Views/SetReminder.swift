@@ -11,6 +11,8 @@ struct SetReminderView: View {
     @EnvironmentObject var viewModel: PlantViewModel
     @Environment(\.dismiss) var dismiss
     
+    @State private var showAlert = false
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -131,8 +133,12 @@ struct SetReminderView: View {
                 // ✅ Save
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        viewModel.addPlant()
-                        dismiss()
+                        if viewModel.plant.name.trimmingCharacters(in: .whitespaces).isEmpty {
+                            showAlert = true
+                        } else {
+                            viewModel.addPlant()
+                            dismiss()
+                        }
                     }) {
                         Image(systemName: "checkmark")
                             .foregroundColor(.white)
@@ -142,9 +148,13 @@ struct SetReminderView: View {
                     .tint(Color("neongreen"))
                 }
             }
+            .alert("Please enter a plant name", isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
+            }
         }
     }
 }
+
 
 #Preview {
     SetReminderView()

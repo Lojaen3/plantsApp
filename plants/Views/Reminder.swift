@@ -29,7 +29,7 @@ struct ReminderView: View {
                 .padding(.top, 10)
 
                 Divider()
-                    .frame(height: 2)
+                    .frame(height: 1.5)
                     .background(Color.gray.opacity(0.3))
 
                 if viewModel.showAllDone {
@@ -64,18 +64,21 @@ struct ReminderView: View {
                         .padding(.top, 4)
 
                     // 🔘 progress bar
-                    ZStack(alignment: .leading) {
-                        Capsule()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(height: 10)
-                        Capsule()
-                            .fill(Color("neongreen"))
-                            .frame(width: CGFloat(viewModel.progress) * UIScreen.main.bounds.width * 0.9, height: 10)
-                            .animation(.easeInOut, value: viewModel.progress)
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            Capsule()
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(height: 10)
+                            
+                            Capsule()
+                                .fill(Color("neongreen"))
+                                .frame(width: CGFloat(viewModel.progress) * geometry.size.width, height: 10)
+                                .animation(.easeInOut, value: viewModel.progress)
+                        }
                     }
+                    .frame(height: 10)
                     .padding(.horizontal)
-
-                    // 🌿 قائمة النباتات
+                    
                     // 🌿 قائمة النباتات
                     if viewModel.plants.isEmpty {
                         Spacer()
@@ -139,6 +142,7 @@ struct ReminderView: View {
             EditReminderView()
                 .environmentObject(viewModel)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

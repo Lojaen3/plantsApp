@@ -59,8 +59,8 @@ class NotificationManager {
         // 💧 Otherwise, schedule one water reminder per plant
         for plant in plants {
             let content = UNMutableNotificationContent()
-            content.title = "💧 Don't forget to water \(plant.name)"
-            content.body = "\(plant.name) is thirsty! 🌱"
+            content.title = "\(plant.name) is thirsty!"
+            content.body = "💧 Don't forget to water \(plant.name)"
             content.sound = .default
 
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)

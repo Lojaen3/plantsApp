@@ -36,7 +36,7 @@ struct ContentView: View {
                         .padding(.top, 10)
                         
                         Divider()
-                            .frame(height: 2)
+                            .frame(height: 1.5)
                             .background(Color.gray.opacity(0.3))
                     }
                     
@@ -56,7 +56,7 @@ struct ContentView: View {
                                 .multilineTextAlignment(.center)
                             
                             Text("Now all your plants will be in one place and we will help you take care of them :)🪴")
-                                .font(.system(size: 16))
+                                .font(.system(size: 15))
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 45)
                                 .foregroundStyle(.oil)
