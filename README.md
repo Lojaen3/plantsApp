@@ -34,6 +34,8 @@ The project follows the **MVVM** (Model–View–ViewModel) architecture pattern
 
 **🎉 All Done Confirmation**: Receive a confirmation when all plant care reminders are complete.
 
+**🌑 Dark mode support**: the app uses a dark theme for a modern look.
+
 ## 🛠️ Technologies Used
 - SwiftUI
 - Combine
